@@ -66,10 +66,9 @@ app.main = {
     	SMALL: 0,
     	BEGIN: 1,
     	DEFAULT: 2,
-    	EXPLODING: 3,
-    	ROUND_OVER: 4,
-    	REPEAT_LEVEL: 5,
-    	END: 6
+    	NEXT_LEVEL: 3,
+    	REPEAT_LEVEL: 4,
+    	END: 5
     }),
 
 
@@ -107,11 +106,8 @@ app.main = {
 		this.ctx = this.canvas.getContext('2d');
 		this.ctx1 = this.canvas1.getContext('2d');
 
-		//loadLevel(1);
-		//document.getElementById('mapMaker').src = 'mapMaker.js';
-		makeMap1();
-		//document.getElementById('level1').src = 'js/level1.js';
-		//loadjsfile("mapMaker.js");
+		loadNewLevel(this.level);
+		//makeMap1();
 		
 		/* Performance tweaks */
 		this.ctx.shadowBlur = 0;
@@ -121,8 +117,6 @@ app.main = {
 		//console.log("this.circles = " + this.circles);
 
 		this.gameState = this.GAME_STATE.SMALL;
-		
-
 		//this.canvas.onmousedown = this.domousedown.bind(this);	
 
 		this.bgAudio = document.querySelector("#bgAudio");
@@ -130,35 +124,28 @@ app.main = {
 		this.effectAudio = document.querySelector("#effectAudio");
 		this.effectAudio.volume = 0.3;
 
-		this.level = 0;
+		
 
 		//this.reset();
 		this.totalScore = 0;
 		this.lives = this.MAX_LIVES;
-		document.querySelector("#fsButton").onclick = function(){
-			if(this.first){
-				app.main.setupFullscreen();
-
-			}else{
-				app.main.makeFullscreen();
-			}
-		};
 
 		this.player = {
 	   		w: 100,
 	   		h: 10,
 	   		SPEED: 7,
 	   		EXTEND: 0,
-	   		x: this.canvas.width/2,
+	   		x: this.canvas.width/2 - 50,
 	   		y: this.canvas.height - 10 - 2,
 	   		backfill: 0
    		};
-   		this.ball = {
+   		/*this.ball = {
    			x : this.canvas.width / 2,
 			y : this.canvas.height - 100,
 			radius : 10,
 			speed : 20
    		};
+   		*/
    		this.gameState = this.GAME_STATE.BEGIN;
 		this.update();
 	},
@@ -220,6 +207,8 @@ app.main = {
 		//console.log('x ' + player.x);
 		//console.log(myKeys.keydown[37]);
 		var movePlayer = function(){
+
+
 
 		if(myKeys.keydown[myKeys.KEYBOARD.KEY_SPACE]){
 			ctx.fillStyle = 'red';
@@ -361,46 +350,6 @@ app.main = {
 	},
 
 
-/*
-
- drawBall : function(ctx, dt, ball, player, app){
- 		
-		var moveBall = function(dt, ball, player, app){
-		ball.x += ball.xSpeed * ball.speed * dt;
-		ball.y += ball.ySpeed * ball.speed * dt;
-		
-			if(app.gameState == app.GAME_STATE.BEGIN){
-				ball.x = player.x + player.w/2;
-				//app.drawBall(ctx, dt, ball, player);
-			}
-			if(app.circleHitLeftRight(ball))
-				{
-					 ball.xSpeed *= -1;
-					 moveBall(dt, ball, player, app);
-				}
-	 			if(app.circleHitTopBottom(ball) == 0)
-	 			{
-					ball.ySpeed *= -1;
-					moveBall(dt, ball, player, app);
-			}
-		};
-
-		var fillBall = function(){
-			ctx.save();
-			ctx.fillStyle = 'white';
-			ctx.beginPath();
-			ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI, false);
-			ctx.closePath();
-			ctx.fill();
-			ctx.restore();
-		};
-
-		moveBall(dt, ball, player, app);
-		fillBall();
-
-	},
-	*/
-
 checkForCollisions: function(dt){
 	"use strict";
 		if(this.gameState == this.GAME_STATE.DEFAULT){
@@ -436,26 +385,12 @@ checkForCollisions: function(dt){
 				if((checkIntersect(c1,app.main.player)) && (Date.now() > +map.playerStamp + 200)){
 						map.playerStamp = Date.now();
 						//this.playEffect();
-						//c2.state = this.CIRCLE_STATE.EXPLODING;
 						c1.ySpeed *= -1;
 						calculateAngle(c1);
-						console.log('yues');
 						return;
 						//var x = c1.x+ c1.radius;
 						//var y = app.main.player
 					}
-
-		/*
-				for(var i = 0; i < shapeRowAll.length; i ++){
-					for(var j = 0; j < shapeRowAll[i].length; j++){
-						var temp = shapeRowAll[i][j];
-
-						if(temp){
-							console.log('ttt ' + temp);
-						}
-					}
-				}
-				*/
 				
 				for(var j = 0; j < blocks.length; j ++){
 					if(checkIntersectBlock(c1, blocks[j])){
@@ -470,22 +405,15 @@ checkForCollisions: function(dt){
 						return;
 					}
 				}
-				/*
-				// only check for collisions if c1 is exploding
-				for(var j=0;j<this.circles.length; j++){
-					var c2 = this.circles[j];
-				// don't check for collisions if c2 is the same circle
-					if (c1 === c2) continue; 
-				// don't check for collisions if c2 is already exploding 
-					//if (c2.state != this.CIRCLE_STATE.NORMAL ) continue;  
-					//if (c2.state === this.CIRCLE_STATE.DONE) continue;
 				
-					// Now you finally can check for a collision
-
-				}
-
-				*/
 			} // end for
+
+		if(blocks.length == 0){
+	 		this.gameState = this.GAME_STATE.NEXT_LEVEL;
+	 		setTimeout(function(){myKeys.keyLook = true;}, 500);
+	 	}
+
+
 			/*
 			// round over?
 			var isOver = true;
@@ -550,11 +478,19 @@ checkForCollisions: function(dt){
 		//this.ctx.clearRect(0,0, this.ctx.width, this.ctx.height);
 
 	 	this.animationID = requestAnimationFrame(this.update.bind(this));
-
-	 	if(myKeys.keydown[myKeys.KEYBOARD.KEY_DOWN]){
-
-	 		loadNewLevel();
-	 	}
+	 	// 3) HOW MUCH TIME HAS GONE BY?
+	 	var dt = this.calculateDeltaTime();
+	 	 
+		
+		if(myKeys.keydown[myKeys.KEYBOARD.KEY_DOWN]){
+		//	loadNewLevel(2);
+		}
+		if((myKeys.anyKey) && (this.gameState == this.GAME_STATE.NEXT_LEVEL)){
+			this.level++;
+			this.gameState = this.GAME_STATE.DEFAULT;
+			this.resetGame();
+			loadNewLevel(this.level);
+		}
 	 	
 	 	// 2) PAUSED?
 	 	// if so, bail out of loop
@@ -564,24 +500,23 @@ checkForCollisions: function(dt){
 	 		return;
 	 	}
 
-	 	// 3) HOW MUCH TIME HAS GONE BY?
-	 	var dt = this.calculateDeltaTime();
-	 	 
 	 	// 4) UPDATE
 	 	// move circles.
-	 	// TSMITH -- when text is on the screen, stop moving the circles
 		// 5) DRAW	
-		// i) draw background
+		// i) draw background 
 		this.ctx.fillStyle = "black"; 
-		//this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT); 
-		//this.ctx.fillRect(0, this.canvas.HEIGHT - 100, this.canvas.width, 100);
 		this.ctx1.clearRect(0,0, app.main.canvas1.width, app.main.canvas1.height);
+
+		if(this.gameState == this.GAME_STATE.NEXT_LEVEL){
+			ctx.fillRect(0,0,this.canvas.width, this.canvas.height);
+			this.drawHUD(this.ctx1);
+			
+			return;
+		}
 	
-		// ii) draw circles
 		this.ctx.globalAlpha = 0.9;
 
 		//drawMap();
-		//this.drawBall(this.ctx, dt, this.ball, this.player, app.main);
 		this.moveCircles(dt);
 
 		//check DOT
@@ -593,9 +528,6 @@ checkForCollisions: function(dt){
 			}
 			lethalStatusCheck(blocks[i].row, blocks[i].rowIndex);	
 		}
-
-
-		this.checkForCollisions(dt);
 
 				//check ball brick collisions
 		this.checkForCollisions(dt);
@@ -616,19 +548,11 @@ checkForCollisions: function(dt){
 		//this.ctx.globalAlpha = 1.0;
 		this.drawHUD(this.ctx1);
 
-		if(this.gameState == this.GAME_STATE.BEGIN || this.gameState == this.GAME_STATE.ROUND_OVER){
-			if(myKeys.keydown[myKeys.KEYBOARD.KEY_UP] && myKeys.keydown[myKeys.KEYBOARD.KEY_SHIFT]){
-				this.totalScore++;
-				this.playEffect();
-			}
-		}
 		// iv) draw debug info
 		if (this.debug){
 			// draw dt in bottom right corner
 			this.fillText(this.ctx1, "dt: " + dt.toFixed(3), this.WIDTH - 150, this.HEIGHT - 10, "18pt courier", "white");
 		}
-
-		//this.ctx1.drawImage(this.canvas1, 0, 0);
 		
 	},
 	
@@ -639,45 +563,7 @@ drawHUD: function(temp){
 		//temp.fillRect(0,0,canvas.width, canvas.height);
 		// draw score
       	// fillText(string, x, y, css, color)
-	/*	if(this.gameState == this.GAME_STATE.SMALL){
-	 		//app.main.gameState = app.main.GAME_STATE.SMALL;
-	 		//app.main.drawHUD(app.main.temp);
-	 					temp.fillStyle = 'black';
-			app.main.canvas.width = 500;
-			app.main.canvas.height = 500;
-			temp.fillRect(0,0, canvas.width, canvas.height);
-			temp.restore();
-			var line1 =  this.first ? "To Start Game" : "To Continue Game";
-			var xPos = this.first ? 163 : 145;
-			this.first = false;
-			this.fillText(this.temp, line1, xPos, canvas.height/2 - 30, "16pt courier", "#ddd");
-			this.fillText(this.temp, "Please Click", 170, canvas.height/2, "16pt courier", "#ddd");
-			this.fillText(this.temp, "Go Full Screen", 155, canvas.height/2 + 30, "16pt courier", "#ddd");
-			temp.restore();
-			return;
-	 	}
-	 	*/
-
-	 	/*
-		if(this.gameState == this.GAME_STATE.SMALL){
-			console.log('fuck ' + this.gameState);
-			temp.fillStyle = 'black';
-			app.main.canvas.width = 1000;
-			app.main.canvas.height = 1000;
-			temp.fillRect(0,0, canvas.width, canvas.height);
-			temp.restore();
-			var line1 =  this.first ? "To Start Game" : "To Continue Game";
-			var xPos = this.first ? 163 : 145;
-			this.first = false;
-			this.fillText(this.temp, line1, xPos, canvas.height/2 - 30, "16pt courier", "#ddd");
-			this.fillText(this.temp, "Please Click", 170, canvas.height/2, "16pt courier", "#ddd");
-			this.fillText(this.temp, "Go Full Screen", 155, canvas.height/2 + 30, "16pt courier", "#ddd");
-			temp.restore();
-			return;
-		}
-
-
-		*/
+	
 
 
 		this.fillText(temp, "Total Score: " + this.totalScore, 5, this.HEIGHT - 15, "16pt courier", "#ddd");
@@ -690,6 +576,7 @@ drawHUD: function(temp){
 			this.fillText(temp, "To begin, Press UP", this.WIDTH/2, this.HEIGHT/2, "30pt courier", "white");
 		} // end if
 	
+
 		// NEW
 		if(this.gameState == this.GAME_STATE.ROUND_OVER){
 			this.pauseCircles = true;
@@ -706,12 +593,26 @@ drawHUD: function(temp){
 				this.fillText(temp, "You have " +  (this.lives - 1) + " lives remaining", this.WIDTH/2 , this.HEIGHT/2 + 35, "20pt courier", "#ddd");
 			}
 		} // end if
+
+
+		if(this.gameState == this.GAME_STATE.NEXT_LEVEL){
+			temp.save();
+			temp.textAlign = "center";
+			temp.textBaseline = "middle";
+			temp.fillStyle = "white";
+			temp.globalAlpha = 1;
+			this.fillText(temp, "Level Complete!", this.WIDTH/2, this.HEIGHT/2 - 50, "50pt courier", "red");
+			this.fillText(temp, "Press Down key to continue", this.WIDTH/2 - 5, this.HEIGHT/2, "28pt courier", "white");
+
+		}
 		if(this.gameState == this.GAME_STATE.END){
 			temp.save();
 			temp.textAlign = "center";
 			temp.textBaseline = "middle";
 			temp.fillStyle = "black";
 			temp.globalAlpha = 1;
+
+		
 			if(this.lives != 0){
 				this.fillText(temp, "You Win!", this.WIDTH/2, this.HEIGHT/2 - 40, "50pt courier", "red");
 			}else{
@@ -792,41 +693,7 @@ drawHUD: function(temp){
 			var newX = 0;
 			var newY = 0;
 			var newW = this.radius;
-			var newH = this.radius;
-
-/*
-			if(this.backX < this.x){
-				newX = this.backX - this.radius;
-				//newH = (this.y - this.radius) - (this.backY - this.radius);
-				newW = (this.x - this.radius) - newX;
-			}else{
-				newX = this.x + this.radius;
-				//newH = (this.backY + this.radius) - (this.y + this.radius);
-				newW = (this.backX + this.radius) - newX;
-			}
-			ctx.fillStyle = 'black';
-			//ctx.fillRect(newX, this.backY + this.radius, newW, newH);
-
-			if(this.backY < this.y){
-				newY = this.backY - this.radius;
-				newH = (this.y - this.radius) - newY;
-			}else{
-				newY = this.y + this.radius;
-				newH = (this.backY + this.radius) - (this.y + this.radius);
-			}
-			
-			//ctx.fillStyle = 'yellow';
-			ctx.fillRect(this.backX - this.radius, newY, this.radius * 2, newH+1);
-			*/
-			/*
-			app.main.ctx1.beginPath();
-			app.main.ctx1.arc(this.backX - 1, this.backY - 1, this.radius + 2, 0, Math.PI*2, false);
-			app.main.ctx1.closePath();
-			app.main.ctx1.fillStyle = 'black';
-			app.main.ctx1.fill();
-			*/
-
-			
+			var newH = this.radius;			
 			
 			app.main.ctx1.beginPath();
 			app.main.ctx1.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
@@ -886,6 +753,7 @@ drawHUD: function(temp){
 				//	}
 				}
 			};
+
 
 			var ey = y(); 
 			ctx.lineTo(ex, ey);
@@ -1054,7 +922,7 @@ drawHUD: function(temp){
 
 			//ray casting stuff
 			c.ray = {};
-			c.ray.inc = 0;
+			c.ray.inc = this.canvas.width/2;
 			c.ray.Inc = true;
 			c.ray.angle = 90;
 			c.ray.angleDeg = 90;

@@ -19,12 +19,18 @@ myKeys.KEYBOARD = Object.freeze({
 // main.js will "poll" this array every frame
 // this works because JS has "sparse arrays" - not every language does
 myKeys.keydown = [];
+myKeys.keyLook = false;
+myKeys.anyKey = false;
 
 
 // event listeners
 window.addEventListener("keydown",function(e){
 //	console.log("keydown=" + e.keyCode);
 	myKeys.keydown[e.keyCode] = true;
+	if(myKeys.keyLook){
+		myKeys.anyKey = true;
+		myKeys.KeyLook = false;
+	}
 });
 	
 window.addEventListener("keyup",function(e){

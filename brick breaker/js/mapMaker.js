@@ -39,45 +39,10 @@
 	canvas1.width = app.main.WIDTH;
 	canvas1.height = app.main.HEIGHT;
 
-
-
-	var typeRow0 = [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	var typeRow1 = [0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0];
-	var typeRow2 = [0,0,1,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0];
-	var typeRow3 = [0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0];
-	var typeRow4 = [0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,0];
-	var typeRow5 = [0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,0];
-	var typeRow6 = [0,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,1,0,0,0];
-	var typeRow7 = [0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0];
-	var typeRow8 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	var typeRowAll = [typeRow0, typeRow1, typeRow2, typeRow3, typeRow4, typeRow5, typeRow6, typeRow7, typeRow8];
-
-	var shapeRow0 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow1 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow2 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow3 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow4 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow5 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow6 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow7 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRow8 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	var shapeRowAll = [shapeRow0, shapeRow1, shapeRow2, shapeRow3, shapeRow4, shapeRow5, shapeRow6, shapeRow7, shapeRow8];
-
-	var map = {
-		numCols : typeRow0.length,
-		numRows : typeRowAll.length,
-		bottomBricks: [],
-		bottomLeft: {},
-		bottomRight: {},
-		shapes: [],
-		playerStamp: 0,
-
-	};
-
-	var BLOCK = {
-		piece : canvas.width / map.numCols,
-		height0 : (canvas.height - 175) / map.numRows
-	}
+	var typeRowAll = [];
+	var shapeRowAll = [];
+	var map = {};
+	var BLOCK = {};
 	var blocks = [];
 	
 	var normalBrickObj = new Image();
@@ -105,48 +70,60 @@
 	var fireAlpha4Obj = new Image();
 		fireAlpha4Obj.src = 'resources/flame_alpha4.png';
 
-/*
-function makeMap(){
-	for(var i = 0; i < typeRowAll.length; i++){
-		for(var j = 0; j < typeRowAll[i].length; j++){
+function loadNewLevel(level){
+	ctx.clearRect(0,0,canvas.width,canvas.height);
 
-			if(typeRowAll[i][j] != 0){
-				var pick = getRandomInt(0, app.main.colors.length);
-				blocks.push(new Shape(((BLOCK.piece).toFixed()) * (j - 1), (BLOCK.height0).toFixed() * i, (BLOCK.piece).toFixed() * 3, (BLOCK.height0).toFixed(), app.main.colors[pick], typeRowAll[i][j]));
-			}
-		}
+	switch(level){
+		case 1:
+			typeRowAll = level1All;
+			break;
+		case 2:
+			typeRowAll = level2All;
+			break;
+		case 3:
+			typeRowAll = level3All;
+			break;
+		case 4:
+			typeRowAll = level4All;
+			break;
+		case 5:
+			typeRowAll = level5All;
+			break;
+		default:
+			break;
 	}
 
-}
-*/
+	shapeRowAll = [];
 
-function loadNewLevel(){
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	typeRow0 = level2_0;
-	typeRow1 = level2_1;
-	typeRow2 = level2_2;
-	typeRow3 = level2_3;
-	typeRow4 = level2_4;
-	typeRow5 = level2_5;
-	typeRow6 = level2_6;
-	typeRow7 = level2_7;
-	typeRow8 = level2_8;
-	typeRowAll = level2All;
+	var temp = [];
+	for(var i = 0; i < typeRowAll.length; i++){
+		temp = [];
+		for(var j = 0; j < typeRowAll[i].length; j++){
+			temp.push(null);
+		}
+		shapeRowAll.push(temp);
+	}
 
-	shapeRow0 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow1 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow2 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow3 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow4 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow5 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow6 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow7 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	shapeRow8 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
-	//typeRowAll = level2All;
+	map = {
+		numCols : typeRowAll[0].length,
+		numRows : typeRowAll.length,
+		bottomBricks: [],
+		bottomLeft: {},
+		bottomRight: {},
+		shapes: [],
+		playerStamp: 0
+
+	};
+
+	BLOCK = {
+		piece : canvas.width / map.numCols,
+		height0 : (canvas.height - 175) / map.numRows
+	};
 
 	map.shapes = [];
 	map.bottomBricks = [];
 	blocks = [];
+
 	makeMap1();
 	drawMap();
 }
@@ -187,7 +164,7 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     this.angle = angle;
     this.row = row;
     this.rowIndex = rowIndex;
-
+	this.me = this;
     if (this.type == 4) { this.health = 2; }
     else this.health = 1;
 
@@ -197,6 +174,7 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     this.otherPortal = null;
 
     this.beenHit = function(ball) {
+
     	switch (type)
     	{
     		case 2: // ice trigger
@@ -204,6 +182,7 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     			break;
     		case 3: // fire trigger
     			applyEffectsToBricks(referenceSurroundingBricks(this), 6);
+    			
     			break;
     		case 9: // poison trigger
     			applyEffectsToBricks(referenceSurroundingBricks(this), 10);
