@@ -25,6 +25,12 @@
 			surrounding bricks become poisoned bricks
 	10: poisoned brick
 			burns twice as fast as fire bricks, disintegrates ball on contact
+	...
+	// burn sprite sheet
+	11: fireAlpha1
+	12: fireAlpha2
+	13: fireAlpha3
+	14: fireAlpha4
 	*/
 
 	/////////////////////////////////////\\ TO DO //\\\\\\\\\\ - [flame alpha sprite rotation, double ball, slow/speed/destroy ball on hit] - (poison particles)
@@ -39,10 +45,52 @@
 	canvas1.width = app.main.WIDTH;
 	canvas1.height = app.main.HEIGHT;
 
+<<<<<<< HEAD
 	var typeRowAll = [];
 	var shapeRowAll = [];
 	var map = {};
 	var BLOCK = {};
+=======
+
+
+	var typeRow0 = [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var typeRow1 = [0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0];
+	var typeRow2 = [0,0,1,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0];
+	var typeRow3 = [0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0];
+	var typeRow4 = [0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,0];
+	var typeRow5 = [0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,0];
+	var typeRow6 = [0,0,1,0,1,0,1,0,3,0,1,0,0,0,0,0,3,0,0,0];
+	var typeRow7 = [0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0];
+	var typeRow8 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var typeRowAll = [typeRow0, typeRow1, typeRow2, typeRow3, typeRow4, typeRow5, typeRow6, typeRow7, typeRow8];
+
+	var shapeRow0 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow1 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow2 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow3 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow4 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow5 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow6 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow7 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRow8 = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+	var shapeRowAll = [shapeRow0, shapeRow1, shapeRow2, shapeRow3, shapeRow4, shapeRow5, shapeRow6, shapeRow7, shapeRow8];
+
+	var map = {
+		numCols : typeRow0.length,
+		numRows : typeRowAll.length,
+		bottomBricks: [],
+		bottomLeft: {},
+		bottomRight: {},
+		shapes: [],
+		playerStamp: 0,
+		burningBricks: [],
+	};
+
+	var BLOCK = {
+		piece : canvas.width / map.numCols,
+		height0 : (canvas.height - 175) / map.numRows
+	}
+>>>>>>> Nick
 	var blocks = [];
 	
 	var normalBrickObj = new Image();
@@ -173,35 +221,30 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     this.poison = false;
     this.otherPortal = null;
 
+<<<<<<< HEAD
     this.beenHit = function(ball) {
 
+=======
+    this.beenHit = function() {
+>>>>>>> Nick
     	switch (type)
     	{
     		case 2: // ice trigger
     			applyEffectsToBricks(referenceSurroundingBricks(this), 5);
     			break;
     		case 3: // fire trigger
+<<<<<<< HEAD
     			applyEffectsToBricks(referenceSurroundingBricks(this), 6);
     			
+=======
+    			applyEffectsToBricks(referenceSurroundingBricks(this), 11);
+>>>>>>> Nick
     			break;
     		case 9: // poison trigger
     			applyEffectsToBricks(referenceSurroundingBricks(this), 10);
     			break;
-    		case 5: // ice brick
-    		    // apply chill to ball
-    		    //console.log('chill speed slow ball');
-    		    //ball.speed *= .75;
-    			break;
-    		case 6: // fire brick
-    			// apply speed boost to ball
-    			//console.log('burn speed boost ball');
-    			//ball.speed *= 1.5;
-    			break;
     		case 10: // poison brick
     			// apply disintigrationg to ball
-    			break;
-    		case 7: // double ball brick
-    			//put another ball in play
     			break;
     		default:
     			break;
@@ -210,36 +253,42 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     };
     this.firstBurn = true;
     this.lastTick = null;
-    this.burnRate = 4000;
+    this.burnRate = 750;
     this.tickDOT = function() {
     	if (this.firstBurn) 
     	{ 
     		this.firstBurn = false;
     		this.timer = (new Date()).getTime(); 
     		this.lastTick = (new Date()).getTime(); 
-    		//console.log("FIRST BURN || Timer: " + this.timer + ", LastTick: " + this.lastTick);
     	}
     	else
     	{ 
-    		this.timer = (new Date()).getTime(); 
-    		//console.log("TIMER TICK || Timer: " + this.timer + ", LastTick: " + this.lastTick);
-    		if (this.timer > (this.lastTick + this.burnRate)) // burn lasts 4 seconds
+    		this.timer = (new Date()).getTime(); 	
+    		//if its been time between ticks
+    		if (this.timer > (this.lastTick + this.burnRate))
 			{
-				for (var i = 0; i < blocks.length; i++)
+				if (this.burn || this.poison)
 				{
-					if (blocks[i].burn || blocks[i].poison)
-					{
-						shapeRowAll[blocks[i].row][blocks[i].rowIndex].lifespan -= .25;
-						this.lastTick = date.getTime();
-					}
+					console.log("TICK, this.type = " + this.type);
+
+					//set time handling
+					this.lastTick = (new Date()).getTime(); 
+					//burn lifespan
+					this.lifespan -= .3;
+
+					//rotate sprite sheet
+					if (this.type == 11) { this.type = 12; }
+					else if (this.type == 12) { this.type = 13; }
+					else if (this.type == 13) { this.type = 14; }
+					else if (this.type == 14) { this.type = 11; }
+					//display new sprites
+					drawMap();
 				}
 			}
     	}
     };
     this.draw = function() {        
         //bricks
-        ctx.drawImage(normalBrickObj, 0 , 0, this.w, this.h);
-        
         if (this.type == 5)
         { ctx.drawImage(iceBrickObj, 0 , 0, this.w, this.h); }
     	else if (this.type == 4)
@@ -259,18 +308,12 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     	if (this.type == 9)
     	{ ctx.drawImage(poisonTriggerObj, 0 + 2, 0 + 1, this.w, this.h); }
 
-        // double ball art placeholder
-
         //DOTs
-    	if (this.burn) 
-    	//{ ctx.drawImage(fireAlphaObj, 0, 0, this.w, this.h); }
-    	{
-    		var burn = function() { console.log("iteration"); }
-    		console.log("start burn");
-    		setTimeout(burn(), 10000);
-    	}
-    	if (this.poison)
-    	{ ctx.drawImage(poisonAlphaObj, 0, 0, this.w, this.h); }
+    	if (this.type == 11) { ctx.drawImage(fireAlpha1Obj, 0 - (this.w * 0.09), 0 - (this.h * 0.3), this.w * 1.2, this.h * 1.6); }
+    	if (this.type == 12) { ctx.drawImage(fireAlpha2Obj, 0 - (this.w * 0.09), 0 - (this.h * 0.3), this.w * 1.2, this.h * 1.6); }
+    	if (this.type == 13) { ctx.drawImage(fireAlpha3Obj, 0 - (this.w * 0.09), 0 - (this.h * 0.3), this.w * 1.2, this.h * 1.6); }
+    	if (this.type == 14) { ctx.drawImage(fireAlpha4Obj, 0 - (this.w * 0.09), 0 - (this.h * 0.3), this.w * 1.2, this.h * 1.6); }
+    	if (this.poison) { ctx.drawImage(poisonAlphaObj, 0, 0, this.w, this.h); }
     
     };
 }
@@ -387,7 +430,6 @@ function applyEffectsToBricks(bricksArray, effect) // used by elemental triggers
 		//switches to ice brick type
 		typeRowAll[bricksArray[0][i]][bricksArray[1][i]] = effect;
 		shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].type = effect;
-
 		//element specific effects
 		switch (effect)
 		{
@@ -398,22 +440,24 @@ function applyEffectsToBricks(bricksArray, effect) // used by elemental triggers
 				shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].health += 1;
 				break;
 			//Burn
-			case 6:
+			case 11:
+				//burn bool
+				shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].burn = true;
 				//ice burns twice as fast as normal
 				if (shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].type == 5) 
-					{ shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].burnRate = 2000; }
-				shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].burn = true;
+					{ shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].burnRate = 375; }
 				break;
 			//Poison
 			case 10:
 				//twice fire burn speed
 				shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].poison = true;
-				shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].burnRate = 2000;
+				shapeRowAll[bricksArray[0][i]][bricksArray[1][i]].burnRate = 375;
 				break;
 
 			default:
 				break;
 		}
+		drawMap();
 	}
 }
 function lethalStatusCheck(i, j){
@@ -425,16 +469,18 @@ function lethalStatusCheck(i, j){
 				if (shapeRowAll[i][j].health == 0) 
 				{ 
 					deleteBrick(i, j); 
+					drawMap();
 
 					return;
 				}
 
 				// find bricks affected by DOT
-				if (shapeRowAll[i][j].lifespan != 0)
+				if (shapeRowAll[i][j].burn || shapeRowAll[i][j].poison)
 				{
-					if (shapeRowAll[i][j].lifespan == 0)
+					if (shapeRowAll[i][j].lifespan <= 0)
 					{
-						deleteBrick();
+						deleteBrick(i, j);
+						drawMap();
 					}
 				}
 			}
