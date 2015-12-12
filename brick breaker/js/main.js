@@ -463,7 +463,7 @@ checkForCollisions: function(dt){
 							c1.ySpeed *= -1; 
 						if((c1.x < blocks[j].x) || ((c1.x) > +blocks[j].x + +blocks[j].w))
 							c1.xSpeed *= -1;
-						blocks[j].health--;
+						blocks[j].beenHit();
 						lethalStatusCheck(blocks[j].row, blocks[j].rowIndex);
 						this.doMap = true;
 						//this.drawHUD(this.ctx);
@@ -590,8 +590,9 @@ checkForCollisions: function(dt){
 			if (blocks[i].burn || blocks[i].poison)
 			{
 				shapeRowAll[blocks[i].row][blocks[i].rowIndex].tickDOT();
+				lethalStatusCheck(blocks[i].row, blocks[i].rowIndex);	
 			}
-			lethalStatusCheck(blocks[i].row, blocks[i].rowIndex);	
+			
 		}
 
 
