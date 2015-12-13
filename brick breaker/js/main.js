@@ -57,7 +57,7 @@ app.main = {
     	MAX_RADIUS: 45,
     	MIN_RADIUS: 2,
     	MAX_LIFETIME: 2.5,
-    	MAX_SPEED: 150,
+    	MAX_SPEED: 300,
     	backX: 0,
     	backY: 0
     }),
@@ -483,7 +483,7 @@ checkForCollisions: function(dt){
 	 	 
 		
 		if(myKeys.keydown[myKeys.KEYBOARD.KEY_DOWN]){
-		//	loadNewLevel(2);
+			loadNewLevel(5);
 		}
 		if((myKeys.anyKey) && (this.gameState == this.GAME_STATE.NEXT_LEVEL)){
 			this.level++;

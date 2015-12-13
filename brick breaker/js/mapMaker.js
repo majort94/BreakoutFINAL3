@@ -95,6 +95,9 @@ function loadNewLevel(level){
 		case 5:
 			typeRowAll = level5All;
 			break;
+		case 6:
+			typeRowAll = level6All;
+			break;
 		default:
 			break;
 	}
@@ -171,7 +174,7 @@ function Shape(x, y, w, h, type, angle, row, rowIndex) {
     this.row = row;
     this.rowIndex = rowIndex;
 	this.me = this;
-    if (this.type == 4) { this.health = 2; }
+    if (this.type == 4) { this.health = 5; }
     else this.health = 1;
 
     this.lifespan = 1;
