@@ -78,7 +78,7 @@
 
 function loadNewLevel(level){
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-
+	console.log('hello');
 	switch(level){
 		case 1:
 			typeRowAll = level1All;

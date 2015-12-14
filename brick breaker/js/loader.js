@@ -25,4 +25,4 @@ window.onfocus = function(){
  app.main.resumeGame();
 };
 
-}
+};

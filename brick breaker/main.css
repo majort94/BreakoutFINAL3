@@ -1,0 +1,94 @@
+
+html{ margin-left: auto; margin-right: auto; height: 100vh; position: relative; background-color: #111;}
+header{margin-bottom: 5px;}
+body{margin: 0px; font-family: 'Ubuntu', sans-serif;}
+h1{ font-size: 35pt; color:#FF3200; text-align: center; margin: 0px;}
+
+#mainWrap{position: relative; margin-top: 7px; margin-left: auto; margin-right: auto; height: 100vh; width: 1500px; min-height: 703px; overflow: visible; background-color: #393939;
+	border-radius: 10px; border: 1px solid black; box-shadow: 5px 0px 5px  #222;}
+#contentWrap{position: relative; height: auto; width: 1200px; min-height: 703px; overflow: visible; margin-left: auto; margin-right: auto;}
+#audioControls{ display: none;}
+
+canvas{border:3px ridge #FFBC01; border-radius: 3px; position: absolute; top: 0; left: 0; width: 1200px; height: 600px;}
+#canvas1{ z-index: 0;}
+#canvas2{ z-index: 1;}
+#canvasWrap{position: relative; height: 603px; width: 1202px; margin-left: auto; margin-right: auto;}
+
+
+
+/********  UI Panel Stuff    *********/
+
+#panel{position: relative; margin-left: auto; margin-right: auto; height: 300px; width:1200px; background-color: #777777;
+	border: 3px ridge #FFBC01; border-radius: 3px; margin-top: 6px;
+}
+.panCols{float:left; background-color: #999; width: 387px; height: 284px; margin-left: 5px; margin-top: 5px;
+	border: 3px ridge black; border-radius: 3px; box-shadow: 2px 3px 2px #444;	
+}	
+
+#pan1 a{float: left; margin-left: 5px; font-size: 16pt; clear: left;}
+
+
+#panel label{font-size: 15pt;}
+#panel h2{text-align: center; height: 40px; margin: 0px; margin-bottom: 25px; font-size: 22pt; margin-top: 2px; border-bottom: 4px ridge black;}
+#pan3 h3{text-align: center; margin: 0px; margin-top: 7px;}
+
+#slidersGroup{position: relative; left: 5px; top: 10px; margin-top: 0px; margin-bottom: 12px;}
+.sliderContainer{height: 20px; }
+
+#slidersGroup .sliders{width: 200px; height: 10px; margin-top: 1px; position: relative; left: 35px;}
+#slidersGroup label{float: left; font-size: 12pt; width: 100px;}
+
+ #slidersGroup .ui-progressbar.ui-widget-content {
+ 	background: none;
+ 	border: 3px solid black; 
+    background-color: red; 
+  }
+
+#slidersGroup .ui-widget-header{
+	background: none; background-color: green; 
+  }
+
+
+
+#diffButtons{position: relative; margin-top: 5px; left: 0px; width: 375px;}
+.diff{height: 25px; width: 70px; margin: 0px; position: relative;}
+#diffButtons label{position: relative; left: 5px; margin-right: 35px; margin-top: 3px;}
+
+
+
+#songChoice{position: relative; top: 10px; margin-left: 5px;}
+#songChoice label{position: relative; width: 115px; top: -7px;}
+#songs{width: 174px; height: 20px;}
+#songs-button{position: relative; left: 10px; height: 20px; font-size: 9pt;}
+
+#songs-menu{font-size: 10pt;}
+#songChoice .ui-button{height:20px; width: 38px; padding-top: 2px; position: relative; left: 10px; top:-8px; font-size: 9pt;}
+#songChoice .ui-button-text{padding: 0px; padding-top: 2px;}
+#songs-button .ui-selectmenu-text{padding-top: 2px;}
+
+
+#levelChoice{position: relative; margin-top: 10px; margin-left: 5px;}
+#levelChoice label{position: relative; width: 115px; top: -7px;}
+#levels{width: 175px; height: 20px;}
+#levels-button{position: relative; left: 8px; height: 20px; font-size: 9pt; }
+#levels-button .ui-selectmenu-text{padding-top: 2px;}
+
+#levels-menu{font-size: 9pt;}
+#go{height:22px; width: 40px; position: relative; left: 10px; top:-8px; font-size: 10pt;}
+
+#pan3 p{margin: 0px; margin-bottom: 5px; margin-right: 5px; position: relative; left: 5px; font-size: 13pt;
+	 width: 125px; display: inline;}
+#pan3 #aim{margin-left: 15px; margin-right: 2px;}
+#pan3 #move{margin-left: 15px; margin-right: 12px;}
+#pan3 #space{color:#ED1C24; margin-right: 2px; margin-left: 0px;}
+#pan3 #plus{margin-right: 15px;}
+
+.controls{position: relative;}
+
+#arrowLeft{margin-left: 0px; margin-right: 2px; position: relative; top: 2px;}
+#arrowRight{-ms-transform: rotate(180deg); /* IE 9 */
+			-webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+			transform: rotate(180deg); margin-left: 0px; position: relative; top: 2px;
+	
+    				}
+

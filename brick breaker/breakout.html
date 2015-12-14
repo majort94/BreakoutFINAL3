@@ -2,26 +2,92 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<style>
-		canvas{border:1px solid gray; position: absolute;
-    top: 0;
-    left: 0;}
-    #canvas1{ z-index: 0;}
-    #canvas2{ z-index: 1;}
-		#audioControls{ display:none;}
-    }
-	</style>
-	<title>Boomshine</title>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<title>Breakout</title>
+	<script>
+		$( document ).ready(function() {
+    	$("#slider1").progressbar({
+    		min: 0,
+    		max: 100,
+    		value: 50
+    	});
+    	$("#slider2").progressbar({
+    		min: 0,
+    		max: 100,
+    		value: 50
+    	});
+    	$("#slider3").progressbar({
+    		min: 0,
+    		max: 100,
+    		value: 50
+    	});
+
+    	$("easy").button();
+    	$("medium").button();
+    	$("hard").button();
+    	//$("#songs").selectmenu();
+    	$("#mute").button();
+    	$("#levels").selectmenu();
+    	$("go").button();
+
+    	$( "#songs" ).selectmenu({
+		  change: function( event, ui ) {
+		  	var e = document.getElementById("songs");
+		  	var src = e.options[e.selectedIndex].value;
+		  	console.log("src " + src );
+		  	$("#bgAudio").attr("src", src);
+		  	$("#bgAudio").load();
+		  	document.querySelector("#bgAudio").play();
+		  }
+		});
+	});
+
+	function mute(){
+		var bgAudio = document.querySelector("#bgAudio");
+		if(!bgAudio.muted){
+			bgAudio.muted = true;
+		}else{
+			bgAudio.muted = false;
+		}
+	};
+	function pickLevel(){
+		var e = document.getElementById("levels");
+		var level = e.options[e.selectedIndex].value;
+		app.main.level = +level;
+		app.main.resetGame();
+		loadNewLevel(app.main.level);
+	};
+	function easy(){
+		app.main.makeEasy();
+	};
+	function medium(){
+		app.main.makeMedium();
+	};
+	function hard(){
+		app.main.makeHard();
+	};
+	
+	</script>
 </head>
 <body>
-	<canvas id = "canvas1">
-		Get a real browser!
-	</canvas>
-	<canvas id ="canvas2">
-		Get a real browser!
-	</canvas>
+
+<div id="mainWrap">
+<header>
+	<h1>Brick Breaker</h1>
+</header>
+<div id="contentWrap">
+	<div id="canvasWrap">
+		<canvas id = "canvas1">
+			Get a real browser!
+		</canvas>
+		<canvas id ="canvas2"></canvas>
+	</div>
 	<section id="audioControls">
- 		<audio id="bgAudio" src="media/background.mp3" controls loop></audio>
+ 		<audio id="bgAudio" src="media/Seven Nation Army.mp3" controls loop></audio>
  		<audio id="effectAudio" controls></audio>
 	</section>
 	<script src='js/utilities.js'></script>
@@ -31,6 +97,85 @@
 	<script src="js/levels.js" type="text/javascript"></script>
 	<script src='js/mapMaker.js'></script>
 
+
+	<div id="panel">
+		<div id="pan1" class="panCols">
+		<h2>Documentation</h2>
+		<a href="docs/tom.txt">Tom's Write Up</a>
+		<a href="docs/nick.txt">Nick's Write Up</a>
+
+		</div>
+
+		<div id="pan2" class="panCols">
+
+		</div>
+
+		<div id="pan3" class="panCols">
+			<h2>Controls</h2>
+
+			<div id="slidersGroup">
+				<div class="sliderContainer">
+					<label >Ball Drag</label>
+					<div id="slider1" class="sliders"></div>
+				</div>
+				<div class="sliderContainer">
+					<label >Player Speed</label>
+					<div id="slider2" class="sliders"></div>
+				</div>
+				<div class="sliderContainer">
+					<label >Player Size</label>
+					<div id="slider3" class="sliders"></div>
+				</div>
+			</div>
+			
+
+			<div id="diffButtons">
+			<label>Difficulty:</label>
+				<button id="easy" class="diff" onclick="easy()">Easy</button>
+				<button id="medium" class="diff" onclick="medium()">Medium</button>
+				<button id="hard" class="diff" onclick="hard()">Hard</button>
+			</div>
+
+			<div id="songChoice">
+				<label for="songs">SongChoice:</label>
+				<select name="songs" id="songs">
+				    <option value="media/Seven Nation Army.mp3">Seven Nation Army.mp3</option>
+				    <option value="media/semi charmed.mp3">Semi Charmed Life.mp3</option>
+				</select>
+				<input type="checkbox" id="mute" onclick="mute()"><label for="mute">Mute</label>
+			</div>
+
+			<div id="levelChoice">
+				<label for="levels">Level Select:</label>
+				<select name="levels" id="levels">
+				    <option value="1">Level 1</option>
+				    <option value="2">Level 2</option>
+				    <option value="3">Level 3</option>
+				</select>
+				<button id="go" onclick="pickLevel()">Go!</button>
+			</div>
+
+			<div class"controls">
+				<p class="control">Pause:</p> <p style="color:#ED1C24">P</p>
+				<p class="control" id="move">Move:<span style="color:#ED1C24"></span></p>
+					<img id="arrowLeft" src="resources/arrowLeft_red.png" alt="Left Key" width="15" height="15">
+					<img id="arrowRight" src="resources/arrowLeft_red.png" alt="Left Key" width="15" height="15">
+
+						<p id="aim">Aim:</p> <p id="space">Space </p> <p id="plus">&#43;</p>
+						<img id="arrowLeft" src="resources/arrowLeft_red.png" alt="Left Key" width="15" height="15">
+						<img id="arrowRight" src="resources/arrowLeft_red.png" alt="Left Key" width="15" height="15">
+			</div>
+			<div class="controls">
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+</div> <!--end mainWrap -->
 		
 </body>
 </html>
