@@ -81,22 +81,13 @@ function loadNewLevel(level){
 	console.log('hello');
 	switch(level){
 		case 1:
-			typeRowAll = level1All;
+			typeRowAll = level6All;
 			break;
 		case 2:
-			typeRowAll = level2All;
-			break;
-		case 3:
-			typeRowAll = level3All;
-			break;
-		case 4:
-			typeRowAll = level4All;
-			break;
-		case 5:
 			typeRowAll = level5All;
 			break;
-		case 6:
-			typeRowAll = level6All;
+		case 3:
+			typeRowAll = level4All;
 			break;
 		default:
 			break;

@@ -462,9 +462,9 @@ checkForCollisions: function(dt){
 	 	var dt = this.calculateDeltaTime();
 	 	 
 		
-		if(myKeys.keydown[myKeys.KEYBOARD.KEY_DOWN]){
-			loadNewLevel(5);
-		}
+		//if(myKeys.keydown[myKeys.KEYBOARD.KEY_DOWN]){
+			//loadNewLevel(5);
+		//}
 		if((myKeys.anyKey) && (this.gameState == this.GAME_STATE.NEXT_LEVEL)){
 			this.level++;
 			this.gameState = this.GAME_STATE.DEFAULT;
@@ -953,7 +953,7 @@ drawHUD: function(temp){
 
 
 	makeEasy: function(){
-		this.circles[0].speed = 75;
+		this.circles[0].speed = 150;
 		$("#slider1").progressbar("option", "value", 100);
 
 		this.player.speed = 10;
@@ -969,7 +969,7 @@ drawHUD: function(temp){
 	},
 
 	makeMedium: function(){
-		this.circles[0].speed = 150;
+		this.circles[0].speed = 200;
 		$("#slider1").progressbar("option", "value", 50);
 
 		this.player.speed = 7;
@@ -985,7 +985,7 @@ drawHUD: function(temp){
 	},
 
 	makeHard: function(){
-		this.circles[0].speed = 250;
+		this.circles[0].speed = 275;
 		$("#slider1").progressbar("option", "value", 0);
 
 		this.player.speed = 5;
