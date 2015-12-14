@@ -18,7 +18,7 @@ var app = app || {};
 app.main = {
 	//  properties
     WIDTH: 1200,
-    HEIGHT: 700,
+    HEIGHT: 600,
     canvas: undefined,
     canvas1: undefined,
     ctx: undefined,
@@ -50,7 +50,7 @@ app.main = {
 	effectSounds :
 	["1.mp3","2.mp3","3.mp3","4.mp3","5.mp3","6.mp3","7.mp3","8.mp3"],
 
-    CIRCLE: Object.freeze({
+    CIRCLE:{
     	NUM_CIRCLES_START: 5,
     	NUM_CIRCLES_END: 70,
     	START_RADIUS: 10,
@@ -60,7 +60,7 @@ app.main = {
     	MAX_SPEED: 150,
     	backX: 0,
     	backY: 0
-    }),
+    },
 
     GAME_STATE: Object.freeze({
     	SMALL: 0,
@@ -79,16 +79,7 @@ app.main = {
    		IMPLODING: 3,
    		DONE: 4
    	}),
-/*
-   	PLAYER: Object.seal({
-   		player.w: 25,
-   		player.h: 10,
-   		SPEED: 1,
-   		EXTEND: 0,
-   		X: 640 / 2,
-   		Y: 480 - 25
-   	}),
-*/
+
    	circles: [],
    	numCircles: this.NUM_CIRCLES_START,
 
@@ -120,7 +111,7 @@ app.main = {
 		//this.canvas.onmousedown = this.domousedown.bind(this);	
 
 		this.bgAudio = document.querySelector("#bgAudio");
-		this.bgAudio.volume=0.25;
+		this.bgAudio.volume=0.5;
 		this.effectAudio = document.querySelector("#effectAudio");
 		this.effectAudio.volume = 0.3;
 
@@ -139,13 +130,8 @@ app.main = {
 	   		y: this.canvas.height - 10 - 2,
 	   		backfill: 0
    		};
-   		/*this.ball = {
-   			x : this.canvas.width / 2,
-			y : this.canvas.height - 100,
-			radius : 10,
-			speed : 20
-   		};
-   		*/
+
+   		this.makeMedium();
    		this.gameState = this.GAME_STATE.BEGIN;
 		this.update();
 	},
@@ -181,12 +167,6 @@ app.main = {
 	   		x: 900 / 2,
 	   		y: canvas.height - 10 - 2
    		};
-   		this.ball = {
-   			x : canvas.width / 2,
-			y : canvas.height - 100,
-			radius : 10,
-			speed : 80
-   		};
    		this.gameState = this.GAME_STATE.BEGIN;
    		//this.drawHUD(this.ctx);
    		makeMap1();
@@ -199,7 +179,7 @@ app.main = {
 
 	stopBGAudio: function(){
 	 	this.bgAudio.pause();
-	 	this.bgAudio.currentTime = 0;
+	 	//this.bgAudio.currentTime = 0;
 	},
 
 	drawPlayer: function(ctx, player){
@@ -266,7 +246,7 @@ app.main = {
 		//this.lives = this.MAX_LIVES;
 		//this.numCircles = this.CIRCLE.NUM_CIRCLES_START;
 		this.gameState = this.GAME_STATE.BEGIN;
-		this.newBall(this.player.x + (this.player.w / 2), canvas.height - 100, 0, 0);
+		this.newBall(this.player.x + (this.player.w / 2), this.canvas.height - 50, 0, 0);
 
 		//this.reset();
 	},
@@ -808,11 +788,6 @@ drawHUD: function(temp){
 
 						var cosx = Math.cos(c.ray.angle );
 						var adj1 = cosx * c.ray.dist;
-
-						//console.log('adj ' + adj);
-						//console.log('adj1 ' + adj1);
-						//console.log( 'yspeed ' + opp/adj);
-						//console.log('xspeed ' + adj/opp);
 						
 					}else{
 						var sinX = Math.sin(c.ray.angle);
@@ -822,12 +797,6 @@ drawHUD: function(temp){
 
 						var cosx = Math.cos(c.ray.angle);
 						var adj1 = cosx * c.ray.dist;
-
-						//console.log('adj ' + adj);
-						//console.log('opp ' + opp);
-						//console.log('sinx ' + sinX);
-						//console.log( 'yspeed ' + opp/adj);
-						//console.log('xspeed ' + adj/opp);
 					}
 					
 
@@ -905,7 +874,7 @@ drawHUD: function(temp){
 		};
 			var c = {};
 			c.x = this.canvas.width / 2;
-			c.y = this.canvas.height - 100;
+			c.y = this.canvas.height - 50;
 
 			c.radius = this.CIRCLE.START_RADIUS;
 
@@ -979,7 +948,56 @@ drawHUD: function(temp){
 
 	
 		} // end for loop
+	},
+
+
+	makeEasy: function(){
+		this.circles[0].speed = 75;
+		$("#slider1").progressbar("option", "value", 100);
+
+		this.player.speed = 10;
+		$("#slider2").progressbar("option", "value", 100);
+
+		var size = 200;
+		if(this.player.w != size){
+			this.player.x -= (size - this.player.w)/2;
+			this.player.w = size;
+			$("#slider3").progressbar("option", "value", 100);
+		}
+		
+	},
+
+	makeMedium: function(){
+		this.circles[0].speed = 150;
+		$("#slider1").progressbar("option", "value", 50);
+
+		this.player.speed = 7;
+		$("#slider2").progressbar("option", "value", 50);
+
+		var size = 125;
+		if(this.player.w != size){
+			this.player.x -= (size - this.player.w)/2;
+			this.player.w = size;
+			$("#slider3").progressbar("option", "value", 50);
+		}
+
+	},
+
+	makeHard: function(){
+		this.circles[0].speed = 250;
+		$("#slider1").progressbar("option", "value", 0);
+
+		this.player.speed = 5;
+		$("#slider2").progressbar("option", "value", 0);
+
+		var size = 75;
+		if(this.player.w != size){
+			this.player.x -= (size - this.player.w)/2;
+			this.player.w = size;
+			$("#slider3").progressbar("option", "value", 0);
+		}
 	}
+
     
     
 }; // end app.main
